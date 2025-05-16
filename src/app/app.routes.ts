@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { RazredComponent } from './pages/razred/razred.component';
+import { GradeViewComponent} from './Grade/grade-view/grade-view.component';
+
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
-    { path: 'razred', component: RazredComponent}
+    { path: 'grade-view', component: GradeViewComponent},
     
 ];

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RazredComponent } from './razred.component';
+import { GradeViewComponent } from './grade-view.component';
 
-describe('RazredComponent', () => {
-  let component: RazredComponent;
-  let fixture: ComponentFixture<RazredComponent>;
+describe('GradeViewComponent', () => {
+  let component: GradeViewComponent;
+  let fixture: ComponentFixture<GradeViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RazredComponent]
+      imports: [GradeViewComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RazredComponent);
+    fixture = TestBed.createComponent(GradeViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
