@@ -1,0 +1,52 @@
+<!-- src/app/Odeljenje/odeljenje-view/odeljenje-view.component.html -->
+<div class="min-h-screen flex flex-col">
+  <main class="flex-grow w-full px-4 py-8 bg-gradient-to-r from-blue-300 to-blue-100 pt-35">
+    <div class="max-w-6xl mx-auto bg-blue-100 rounded-lg shadow-lg p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Odeljenja</h1>
+        <a 
+          routerLink="/odeljenja-add"
+          class="bg-indigo-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+        >
+          + Novo odeljenje
+        </a>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Naziv</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Razred</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Vrsta</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Učenici</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Akcije</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let o of odeljenja">
+              <td class="px-6 py-4 whitespace-nowrap">{{ o.naziv }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ o.gradeId }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ o.vrsta }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ o.ukupnoUcenika }}</td> 
+              <td class="px-6 py-4 whitespace-nowrap space-x-2">
+                <a 
+                  [routerLink]="['/odeljenja-edit', o.id]" 
+                  class="text-blue-600 hover:text-blue-900"
+                >
+                  ✏️
+                </a>
+                <button 
+                  (click)="deleteOdeljenje(o.id)"
+                  class="text-red-600 hover:text-red-900"
+                >
+                  🗑️
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>

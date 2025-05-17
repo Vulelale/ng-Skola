@@ -43,9 +43,9 @@ export class GradeService {
   
   
   getGradeById(id: string): Observable<Grade | undefined> {
-    console.log('Tražim razred sa ID:', id);
+   
     const grade = this.mockGrades.find(g => g.id === id);
-    console.log('Pronađen razred:', grade);
+    
     return of(grade);
   }
   
@@ -54,13 +54,18 @@ export class GradeService {
   }
   
   updateGrade(updatedGrade: Grade): Observable<any> {
-    console.log('Ažuriranje razreda:', updatedGrade); 
+   
     const index = this.mockGrades.findIndex(g => g.id === updatedGrade.id);
     if (index !== -1) {
       this.mockGrades[index] = updatedGrade; 
     }
     return of({ success: true });
   }
+
+  addGrade(noviRazred: Grade): Observable<any> {
+  this.mockGrades.push(noviRazred);
+  return of({ success: true }).pipe(delay(300));
+}
   
   
 }
