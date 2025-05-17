@@ -3,12 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GradeService } from '../../services/grade.service';
 import { Grade } from '../../grade';
-
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-grade-view',
    standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule,],
   templateUrl: './grade-view.component.html',
   styleUrl: './grade-view.component.css'
 })
