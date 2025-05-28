@@ -1,58 +1,61 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GradeService } from '../../services/grade.service';
-import { Grade } from '../../grade';
+import { CodebookItem } from '../../grade';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+interface GradeUpdateDto {
+  gradeId: number;
+  skolskaGodinaId: number;
+  razredId: number;
+  programId: number;
+}
+
 @Component({
   selector: 'app-grade-add',
   standalone: true,
-  imports: [FormsModule,CommonModule],
   templateUrl: './grade-add.component.html',
-  styleUrls: ['./grade-add.component.css']
+  styleUrls: ['./grade-add.component.css'],
+  imports: [FormsModule, CommonModule]
 })
-export class GradeAddComponent {
-  noviRazred: Partial<Grade> = {
-    schoolYear: '',
-    razred: '',
-    program: '',
-    totalClasses: 0,
-    totalStudents: 0
+export class GradeAddComponent implements OnInit {
+  noviRazred: GradeUpdateDto = {
+    gradeId: 0,
+    skolskaGodinaId: 0,
+    razredId: 0,
+    programId: 0
   };
 
-  skolskeGodine: string[] = ['2023/2024', '2024/2025', '2025/2026'];
-  razredi: string[] = ['I razred', 'II razred', 'III razred', 'IV razred', 'V razred', 'VI razred', 'VII razred', 'VIII razred'];
-  programi: string[] = [];
+  skolskeGodine: CodebookItem[] = [];
+  razredi: CodebookItem[] = [];
+  programi: CodebookItem[] = [];
+  successMessage = '';
+  errorMessage = '';
 
-  constructor(
-    private gradeService: GradeService,
-    private router: Router
-  ) {
-    this.loadPrograms();
-  }
+  constructor(private gradeService: GradeService, private router: Router) {}
 
-  private loadPrograms(): void {
-    this.gradeService.getPrograms().subscribe({
-      next: (programs) => this.programi = programs,
-      error: (err) => console.error('Greška pri učitavanju programa:', err)
-    });
+  ngOnInit(): void {
+    this.gradeService.getCodebookItems('Skolska godina').subscribe(data => this.skolskeGodine = data);
+    this.gradeService.getCodebookItems('Razred').subscribe(data => this.razredi = data);
+    this.gradeService.getCodebookItems('Program').subscribe(data => this.programi = data);
   }
 
   onSubmit(): void {
-    const potpuniRazred: Grade = {
-      id: Date.now().toString(),
-      ...this.noviRazred,
-      totalClasses: 0,
-      totalStudents: 0
-    } as Grade;
+    this.successMessage = '';
+    this.errorMessage = '';
 
-    this.gradeService.addGrade(potpuniRazred).subscribe({
+    this.gradeService.addGrade(this.noviRazred).subscribe({
       next: () => {
-        alert('Razred uspešno dodat!');
-        this.router.navigate(['/grade-view']);
+        this.successMessage = '✅ Uspešno dodat razred!';
+        setTimeout(() => this.router.navigate(['/grade-view']), 1500);
       },
-      error: (err) => console.error('Greška pri dodavanju:', err)
+      error: err => {
+        console.error(err);
+        this.errorMessage = '❌ Greška prilikom dodavanja razreda.';
+      }
     });
   }
 }
+
+

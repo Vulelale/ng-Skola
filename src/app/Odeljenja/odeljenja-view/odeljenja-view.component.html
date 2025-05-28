@@ -1,52 +1,77 @@
-<!-- src/app/Odeljenje/odeljenje-view/odeljenje-view.component.html -->
 <div class="min-h-screen flex flex-col">
-  <main class="flex-grow w-full px-4 py-8 bg-gradient-to-r from-blue-300 to-blue-100 pt-35">
-    <div class="max-w-6xl mx-auto bg-blue-100 rounded-lg shadow-lg p-6">
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-800">Odeljenja</h1>
-        <a 
-          routerLink="/odeljenja-add"
-          class="bg-indigo-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-        >
+  <main class="flex-grow w-full px-4 py-10 bg-gradient-to-r from-blue-300 to-blue-100">
+    <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-xl backdrop-blur-lg border border-white/20 p-6">
+
+      <!-- Header Section -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+        <div class="mb-3 md:mb-0">
+          <h1 class="text-3xl font-bold text-gray-900">Odeljenja</h1>
+          <p class="text-sm text-gray-600">Pregled svih školskih odeljenja</p>
+        </div>
+        <a routerLink="/odeljenja-add"
+          class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md font-medium transition-all transform hover:scale-105 shadow">
           + Novo odeljenje
         </a>
       </div>
 
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+      <!-- Filter -->
+      <div class="mb-6">
+        <label for="filter" class="block text-sm text-gray-700 mb-1">Pretraga po nazivu</label>
+        <input
+          id="filter"
+          type="text"
+          [(ngModel)]="filterNaziv"
+          (ngModelChange)="applyFilter()"
+          placeholder="npr. 1a, 2B..."
+          class="w-full px-3 py-2 rounded-md border border-gray-300 text-sm placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500"
+        />
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto rounded-lg ring-1 ring-gray-200 shadow">
+        <table class="min-w-full divide-y divide-gray-200 text-sm text-gray-700">
+          <thead class="bg-blue-50 text-xs text-gray-600 uppercase tracking-wider">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Naziv</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Razred</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Vrsta</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Učenici</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Akcije</th>
+              <th class="px-3 py-2 text-left">Naziv</th>
+              <th class="px-3 py-2 text-left">Vrsta</th>
+              <th class="px-3 py-2 text-left">Jezik</th>
+              <th class="px-3 py-2 text-left">Smena</th>
+              <th class="px-3 py-2 text-left">Starešina</th>
+              <th class="px-2 py-2 text-center">Izdv.</th>
+              <th class="px-3 py-2 text-left">Škola</th>
+              <th class="px-2 py-2 text-center">Celo</th>
+              <th class="px-2 py-2 text-center">Ukupno</th>
+              <th class="px-2 py-2 text-center">👦</th>
+              <th class="px-2 py-2 text-center">👧</th>
+              <th class="px-2 py-2 text-center">Akcije</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr *ngFor="let o of odeljenja">
-              <td class="px-6 py-4 whitespace-nowrap">{{ o.naziv }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ o.gradeId }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ o.vrsta }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ o.ukupnoUcenika }}</td> 
-              <td class="px-6 py-4 whitespace-nowrap space-x-2">
-                <a 
-                  [routerLink]="['/odeljenja-edit', o.id]" 
-                  class="text-blue-600 hover:text-blue-900"
-                >
-                  ✏️
-                </a>
-                <button 
-                  (click)="deleteOdeljenje(o.id)"
-                  class="text-red-600 hover:text-red-900"
-                >
-                  🗑️
-                </button>
+          <tbody class="bg-white divide-y divide-gray-100">
+            <tr *ngFor="let o of filtriranaOdeljenja" class="hover:bg-gray-50">
+              <td class="px-3 py-2 text-gray-800">{{ o.naziv }}</td>
+              <td class="px-3 py-2 text-gray-600">{{ o.vrsta }}</td>
+              <td class="px-3 py-2 text-gray-600">{{ o.jezikNastave }}</td>
+              <td class="px-3 py-2 text-gray-600">{{ o.smena || '-' }}</td>
+              <td class="px-3 py-2 text-gray-600 whitespace-normal">{{ o.odeljenjskiStaresina || '-' }}</td>
+              <td class="px-2 py-2 text-center">{{ o.izdvojenoOdeljenje ? '✔️' : '❌' }}</td>
+              <td class="px-3 py-2 text-gray-600 whitespace-normal">{{ o.nazivIzdvojeneSkole || '-' }}</td>
+              <td class="px-2 py-2 text-center">{{ o.celodnevnaNastava ? '✔️' : '❌' }}</td>
+              <td class="px-2 py-2 text-center">{{ o.ukupanBrojUcenika }}</td>
+              <td class="px-2 py-2 text-center">{{ o.brojUcenika }}</td>
+              <td class="px-2 py-2 text-center">{{ o.brojUcenica }}</td>
+              <td class="px-2 py-2 text-center space-x-1">
+                <a [routerLink]="['/odeljenja-edit', o.classId]" class="text-indigo-600 hover:text-indigo-900">✏️</a>
+                <button (click)="deleteOdeljenje(o.classId)" class="text-red-600 hover:text-red-900">🗑️</button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+
     </div>
   </main>
 </div>
+
+
+
+

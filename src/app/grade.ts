@@ -1,9 +1,29 @@
 export interface Grade {
-  id: string;
-  schoolYear: string;
-  razred: string;
-  program: string;
-  totalClasses: number;
-  totalStudents: number;
-  
+  gradeId: number;
+  skolskaGodinaId: number;
+  razredId: number;
+  programId: number;
+
+  skolskaGodina?: string;
+  razred?: string;
+  program?: string;
+  ukupanBrojOdeljenja?: number;
+  ukupanBrojUcenika?: number;
 }
+
+
+
+export interface CodebookItem {
+  itemId: number;
+  value: string;
+}
+
+
+export interface GradeUpdateDto {
+  gradeId: number;              // možeš staviti `0` za novi unos
+  skolskaGodinaId: number;
+  razredId: number;
+  programId: number;
+}
+
+

@@ -1,30 +1,50 @@
-<nav class="fixed top-0 left-0 w-full z-50 backdrop-blur bg-gradient-to-r from-blue-300/70 to-blue-100/70 text-white p-4 shadow-lg">
-  <div class="container mx-auto flex justify-between items-center">
-    <div class="flex items-center space-x-6">
-      <a href="/" class="flex items-center space-x-2 hover:text-gray-300">
-        <img src="assets/images/sova.png" alt="Škola Logo" class="h-20 w-auto" />
-        <span class="text-2xl font-bold text-white">Škola.io</span>
+<main class="flex-grow w-full px-4 py-8 bg-gradient-to-r from-blue-300 to-blue-100 pt-35 ">
+  <nav class="fixed top-0 left-0 w-full z-50 backdrop-blur bg-gradient-to-r from-blue-300/70 to-blue-100/70 text-white shadow-lg">
+    <div class="container mx-auto relative flex items-center py-3 px-6 md:px-0">
+      <!-- Logo + Brand (levo) -->
+      <a href="/" class="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+        <img src="assets/images/sova.png" alt="Škola Logo" class="h-14 w-auto" />
+        <span class="text-3xl font-extrabold tracking-tight select-none">Škola.io</span>
       </a>
-      <a href="/" class="text-lg text-white hover:text-gray-300 transition-colors">Početna</a>
-      <a href="/grade-view" class="text-lg text-white hover:text-gray-300 transition-colors">Razredi</a>
-      <a href="/odeljenja-view" class="text-lg text-white hover:text-gray-300 transition-colors">Odeljenja</a>
-    </div>
 
-    <div class="flex space-x-4">
-      <a 
-        routerLink="/login" 
-        class="bg-indigo-600 hover:bg-white hover:text-indigo-600 px-6 py-2 rounded-full transition-colors text-white font-semibold hover:cursor-pointer"
-      >
-        Prijava
-      </a>
-      <a 
-        routerLink="/register" 
-        class="bg-green-500 hover:bg-white hover:text-green-600 px-6 py-2 rounded-full transition-colors text-white font-semibold hover:cursor-pointer"
-      >
-        Registracija
-      </a>
+      <!-- Navigacija (centrirano) -->
+      <div class="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-10 font-medium text-lg">
+        <a href="/" class="relative group">
+          <span class="hover:text-gray-300 transition-colors">Početna</span>
+          <span class="absolute left-0 -bottom-1 w-0 group-hover:w-full h-0.5 bg-white transition-all rounded"></span>
+        </a>
+        <a href="/grade-view" class="relative group">
+          <span class="hover:text-gray-300 transition-colors">Razredi</span>
+          <span class="absolute left-0 -bottom-1 w-0 group-hover:w-full h-0.5 bg-white transition-all rounded"></span>
+        </a>
+        <a href="/odeljenja-view" class="relative group">
+          <span class="hover:text-gray-300 transition-colors">Odeljenja</span>
+          <span class="absolute left-0 -bottom-1 w-0 group-hover:w-full h-0.5 bg-white transition-all rounded"></span>
+        </a>
+      </div>
+
+      <!-- Dugmad za prijavu/registraciju (sakriveno, možeš aktivirati) -->
+      <!-- 
+      <div class="hidden md:flex space-x-4">
+        <a href="/login" class="bg-indigo-600 hover:bg-white hover:text-indigo-600 px-6 py-2 rounded-full transition-colors text-white font-semibold">
+          Prijava
+        </a>
+        <a href="/register" class="bg-green-500 hover:bg-white hover:text-green-600 px-6 py-2 rounded-full transition-colors text-white font-semibold">
+          Registracija
+        </a>
+      </div>
+      -->
+
+      <!-- Mobile menu button (možeš dodati funkcionalnost ako želiš) -->
+      <button class="md:hidden focus:outline-none" aria-label="Otvori meni">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+             viewBox="0 0 24 24">
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
     </div>
-  </div>
-</nav>
+  </nav>
+</main>
+
 
 

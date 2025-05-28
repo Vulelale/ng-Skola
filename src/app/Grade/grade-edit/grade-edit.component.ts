@@ -1,76 +1,63 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute,Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GradeService } from '../../services/grade.service';
-import { Grade } from '../../grade';
-import { FormsModule } from '@angular/forms';
+import { Grade, CodebookItem } from '../../grade';
 import { CommonModule } from '@angular/common';
-
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-grade-edit',
-  standalone:true,
-  imports: [FormsModule,RouterModule,CommonModule],
+  standalone: true,
   templateUrl: './grade-edit.component.html',
-  styleUrl: './grade-edit.component.css'
+  styleUrls: ['./grade-edit.component.css'],
+  imports: [CommonModule, FormsModule]
 })
 export class GradeEditComponent implements OnInit {
   grade: Grade | null = null;
-  programs: string[] = [];
-  
+  skolskeGodine: CodebookItem[] = [];
+  razredi: CodebookItem[] = [];
+  programi: CodebookItem[] = [];
+  successMessage: string = '';
+errorMessage: string = '';
+
+
   constructor(
-    private route: ActivatedRoute,
     private gradeService: GradeService,
+    private route: ActivatedRoute,
     private router: Router
   ) {}
-  
+
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    console.log('Dobijen ID iz rute:', id); 
-    
-    if (id) {
-      this.loadGrade(id);
-      this.loadPrograms();
-    } else {
-      console.error('ID nije pronađen u ruti');
-      this.router.navigate(['/grade-view']);
-    }
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.gradeService.getGradeById(id).subscribe(g => this.grade = g);
+    this.gradeService.getCodebookItems("Skolska godina").subscribe(d => this.skolskeGodine = d);
+    this.gradeService.getCodebookItems("Razred").subscribe(d => this.razredi = d);
+    this.gradeService.getCodebookItems("Program").subscribe(d => this.programi = d);
   }
-  
-  private loadGrade(id: string): void {
-    this.gradeService.getGradeById(id).subscribe({
-      next: (grade) => {
-        if (grade) {
-          this.grade = grade;
-          console.log('Učitani podaci:', this.grade); 
-        } else {
-          alert('Razred nije pronađen!');
-          this.router.navigate(['/grade-view']);
-        }
-      },
-      error: (err) => {
-        console.error('Greška pri učitavanju:', err);
-        this.router.navigate(['/grade-view']);
-      }
-    });
-  }
-  
-  private loadPrograms(): void {
-    this.gradeService.getPrograms().subscribe({
-      next: (programs) => this.programs = programs,
-      error: (err) => console.error('Error loading programs:', err)
-    });
-  }
-  
- saveChanges(): void {
-   console.log('Trenutni razred:', this.grade); 
+
+save(): void {
   if (!this.grade) return;
+
+  this.successMessage = '';
+  this.errorMessage = '';
 
   this.gradeService.updateGrade(this.grade).subscribe({
     next: () => {
-      alert('Uspešno sačuvano!');
-      this.router.navigate(['/grade-view']); 
+      this.successMessage = '✅ Uspešno sačuvano!';
+      setTimeout(() => this.router.navigate(['/grade-view']), 1500); // sačekaj 1.5s pa preusmeri
     },
-    error: (err) => console.error('Greška:', err)
+    error: (err) => {
+      console.error('Greška:', err);
+      this.errorMessage = '❌ Greška prilikom čuvanja. Pokušajte ponovo.';
+    }
   });
 }
+
+
+
 }
+
+
+
+
+

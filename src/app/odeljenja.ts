@@ -1,17 +1,16 @@
-// src/app/odeljenja.ts
 export interface Odeljenje {
-  id: string;
+  classId: number;
+  gradeId: number;
   naziv: string;
-  gradeId: string;
   vrsta: string;
   jezikNastave: string;
   kombinovano: boolean;
-  celodnevno: boolean;
-  izdvojeno: boolean;
+  celodnevnaNastava: boolean;
+  izdvojenoOdeljenje: boolean;
   nazivIzdvojeneSkole?: string;
-  staresina: string; 
-  smena: string;
-  ukupnoUcenika: number; 
-  brojDecaka: number;    
-  brojDevojcica: number; 
+  odeljenjskiStaresina?: string;
+  smena?: string;
+  ukupanBrojUcenika: number;
+  brojUcenika: number;
+  brojUcenica: number;
 }

@@ -1,59 +1,73 @@
-<!-- grade-view.component.html -->
-
 <div class="min-h-screen flex flex-col">
-  <main class="flex-grow w-full px-4 py-8 bg-gradient-to-r from-blue-300 to-blue-100 pt-35">
-    <div class="max-w-6xl mx-auto bg-blue-100 rounded-lg shadow-lg p-6">
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-800">Razredi</h1>
-        <a 
-        href="/grade-add"
-        class="bg-indigo-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-        >
-        + Dodaj novi razred
-      </a>
+  <main class="flex-grow w-full px-4 py-12 bg-gradient-to-r from-blue-300 to-blue-100">
+    <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-xl backdrop-blur-lg border border-white/20 p-8">
+
+      <!-- Header Section -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+        <div class="mb-4 md:mb-0">
+          <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Upravljanje Razredima</h1>
+          <p class="mt-2 text-gray-600">Pregled i upravljanje svim školskim razredima</p>
+        </div>
+        <a routerLink="/grade-add" class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105 shadow-md hover:shadow-lg flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          Novi Razred
+        </a>
+      </div>
+
+      <!-- Filter Section -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+        <input type="text" placeholder="Školska godina" [(ngModel)]="filter.skolskaGodina"
+          class="w-full px-4 py-2.5 rounded-lg border-0 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 transition-all"/>
+        <input type="text" placeholder="Razred" [(ngModel)]="filter.razred"
+          class="w-full px-4 py-2.5 rounded-lg border-0 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 transition-all"/>
+        <input type="text" placeholder="Program" [(ngModel)]="filter.program"
+          class="w-full px-4 py-2.5 rounded-lg border-0 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 transition-all"/>
+      </div>
+
+      <!-- Table Section -->
+      <div class="overflow-hidden rounded-xl ring-1 ring-gray-200 shadow-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-blue-50">
+            <tr>
+              <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Šk. godina</th>
+              <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Razred</th>
+              <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Program</th>
+              <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Odeljenja</th>
+              <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Učenici</th>
+              <th class="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Akcije</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-100">
+            <tr *ngFor="let grade of filteredGrades()" class="hover:bg-gray-50 transition-colors">
+              <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-medium">{{ grade.skolskaGodina }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-600">{{ grade.razred }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-600">{{ grade.program }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-600">{{ grade.ukupanBrojOdeljenja }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-600">{{ grade.ukupanBrojUcenika }}</td>
+              <td class="px-6 py-4 whitespace-nowrap space-x-3">
+                <a [routerLink]="['/grade-edit', grade.gradeId]" 
+                   class="inline-flex items-center p-2 rounded-md text-indigo-600 hover:bg-indigo-50 transition-colors">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                  </svg>
+                </a>
+                <button (click)="deleteGrade(grade.gradeId)" 
+                        class="inline-flex items-center p-2 rounded-md text-red-600 hover:bg-red-50 transition-colors">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
-    
-    <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Šk. godina</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Razred</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Program</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Odeljenja</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Učenici</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Izmena</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Brisanje</th>
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-          <tr *ngFor="let grade of grades">
-            <td class="px-6 py-4 whitespace-nowrap">{{ grade.schoolYear }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ grade.razred }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ grade.program }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ grade.totalClasses }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ grade.totalStudents }}</td>
-            <td class="px-6 py-4 whitespace-nowrap space-x-2">
-              <a 
-              [routerLink]="['/grade-edit', grade.id]" 
-              class="text-blue-600 hover:text-blue-900 hover:cursor-pointer"
-              >
-              ✏️
-            </a>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap space-x-2">
-            <button 
-            (click)="deleteGrade(grade)"
-            class="text-red-600 hover:text-red-900 hover:cursor-pointer"
-            >
-            🗑️
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  </main>
 </div>
-</div>
-</main>
-</div>
+
+
 

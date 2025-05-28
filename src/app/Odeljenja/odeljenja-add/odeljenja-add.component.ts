@@ -1,38 +1,53 @@
-// src/app/Odeljenje/odeljenje-add/odeljenje-add.component.ts
-import { Component } from '@angular/core';
-import { OdeljenjeService } from '../../services/odeljenja.service';
-import { Odeljenje } from '../../odeljenja';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Odeljenje } from '../../odeljenja';
+import { OdeljenjeService } from '../../services/odeljenja.service';
+import { GradeService } from '../../services/grade.service';
+import { Grade } from '../../grade';
+import { CodebookItem } from '../../grade';
 
 @Component({
   selector: 'app-odeljenje-add',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './odeljenja-add.component.html',
   styleUrls: ['./odeljenja-add.component.css']
 })
-export class OdeljenjeAddComponent {
+export class OdeljenjeAddComponent implements OnInit {
   novoOdeljenje: Odeljenje = {
-    id: Date.now().toString(),
+    classId: 0,
+    gradeId: 0,
     naziv: '',
-    gradeId: '',
     vrsta: '',
     jezikNastave: '',
     kombinovano: false,
-    celodnevno: false,
-    izdvojeno: false,
-    staresina: '',
+    celodnevnaNastava: false,
+    izdvojenoOdeljenje: false,
+    nazivIzdvojeneSkole: '',
+    odeljenjskiStaresina: '',
     smena: '',
-    ukupnoUcenika: 0,
-    brojDecaka: 0,
-    brojDevojcica: 0
+    ukupanBrojUcenika: 0,
+    brojUcenika: 0,
+    brojUcenica: 0
   };
+
+  gradeOpcije: Grade[] = [];
+  vrste: CodebookItem[] = [];
+  jezici: CodebookItem[] = [];
 
   constructor(
     private odeljenjeService: OdeljenjeService,
+    private gradeService: GradeService,
     private router: Router
   ) {}
+
+  ngOnInit(): void {
+    this.gradeService.getGrades().subscribe(data => this.gradeOpcije = data);
+    this.gradeService.getCodebookItems("Vrsta odeljenja").subscribe(data => this.vrste = data);
+    this.gradeService.getCodebookItems("Jezik nastave").subscribe(data => this.jezici = data);
+  }
 
   onSubmit(): void {
     this.odeljenjeService.addOdeljenje(this.novoOdeljenje).subscribe({
@@ -44,3 +59,5 @@ export class OdeljenjeAddComponent {
     });
   }
 }
+
+

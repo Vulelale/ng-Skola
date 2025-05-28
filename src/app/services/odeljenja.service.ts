@@ -1,71 +1,39 @@
-// src/app/services/odeljenje.service.ts
+// ✅ src/app/services/odeljenja.service.ts
 import { Injectable } from '@angular/core';
-import { Observable, of, delay } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Odeljenje } from '../odeljenja';
-import { Grade } from '../grade';
+import { environment } from '../../environments/environment';
+import { CodebookItem } from '../grade';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OdeljenjeService {
-  private mockOdeljenja: Odeljenje[] = [
-    {
-      id: 'c1',
-      naziv: '1A',
-      gradeId: '1',
-      vrsta: 'Opšte',
-      jezikNastave: 'Srpski',
-      kombinovano: false,
-      celodnevno: true,
-      izdvojeno: false,
-      staresina: 'Petar Petrović', 
-      smena: 'Prva',
-      ukupnoUcenika: 25, 
-      brojDecaka: 12,    
-      brojDevojcica: 13  
-    },
-    {
-      id: 'c1',
-      naziv: '1A',
-      gradeId: '1',
-      vrsta: 'Opšte',
-      jezikNastave: 'Srpski',
-      kombinovano: false,
-      celodnevno: true,
-      izdvojeno: false,
-      staresina: 'Petar Petrović', 
-      smena: 'Prva',
-      ukupnoUcenika: 25, 
-      brojDecaka: 12,    
-      brojDevojcica: 13  
-    }
-  ];
+  private apiUrl = `${environment.apiUrl}/api/Classes`;
   
-  constructor() { }
+  constructor(private http: HttpClient) {}
   
   getOdeljenja(): Observable<Odeljenje[]> {
-    return of(this.mockOdeljenja);
+    return this.http.get<Odeljenje[]>(this.apiUrl);
   }
   
-  getOdeljenjeById(id: string): Observable<Odeljenje | undefined> {
-    return of(this.mockOdeljenja.find(o => o.id === id));
+  getOdeljenjeById(id: number): Observable<Odeljenje> {
+    return this.http.get<Odeljenje>(`${this.apiUrl}/${id}`);
   }
   
-  addOdeljenje(novoOdeljenje: Odeljenje): Observable<any> {
-    this.mockOdeljenja.push(novoOdeljenje);
-    return of({ success: true });
+  addOdeljenje(odeljenje: Odeljenje): Observable<any> {
+    return this.http.post(this.apiUrl, odeljenje);
   }
   
-  updateOdeljenje(updatedOdeljenje: Odeljenje): Observable<any> {
-    const index = this.mockOdeljenja.findIndex(o => o.id === updatedOdeljenje.id);
-    if (index !== -1) {
-      this.mockOdeljenja[index] = updatedOdeljenje;
-    }
-    return of({ success: true });
+  updateOdeljenje(odeljenje: Odeljenje): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${odeljenje.classId}`, odeljenje);
   }
   
-  deleteOdeljenje(id: string): Observable<any> {
-    this.mockOdeljenja = this.mockOdeljenja.filter(o => o.id !== id);
-    return of({ success: true });
+  deleteOdeljenje(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+  getCodebookItems(name: string): Observable<CodebookItem[]> {
+    return this.http.get<CodebookItem[]>(`${this.apiUrl}/codebooks/${name}`); 
   }
 }
