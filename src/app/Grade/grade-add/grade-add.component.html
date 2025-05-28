@@ -2,13 +2,13 @@
   <main class="flex-grow w-full px-4 py-12 bg-gradient-to-r from-blue-300 to-blue-100">
     <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-xl backdrop-blur-lg border border-white/20 p-8">
 
-      <!-- Header Section -->
+    
       <div class="text-center mb-10">
         <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Kreiranje Novog Razreda</h1>
         <p class="mt-3 text-gray-600">Popunite osnovne informacije o razredu</p>
       </div>
 
-      <!-- Poruke -->
+     
       <div *ngIf="successMessage" class="mb-6 p-4 rounded-lg bg-green-50 ring-1 ring-green-200 flex items-center">
         <svg class="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
@@ -24,7 +24,7 @@
       </div>
 
       <form (ngSubmit)="onSubmit()" class="space-y-8">
-        <!-- Školska godina -->
+       
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Školska godina
@@ -41,7 +41,7 @@
           </select>
         </div>
 
-        <!-- Razred -->
+       
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Razred
@@ -58,7 +58,7 @@
           </select>
         </div>
 
-        <!-- Program -->
+        
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Program
@@ -75,7 +75,7 @@
           </select>
         </div>
 
-        <!-- Action Buttons -->
+        
         <div class="flex flex-col sm:flex-row justify-end gap-4 mt-10">
           <a href="/grade-view" 
             class="px-6 py-2.5 rounded-lg font-medium text-gray-700 hover:bg-gray-50 ring-1 ring-inset ring-gray-300 transition-all transform hover:scale-[1.02] flex items-center justify-center">

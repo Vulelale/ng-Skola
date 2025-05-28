@@ -20,7 +20,7 @@ export interface CodebookItem {
 
 
 export interface GradeUpdateDto {
-  gradeId: number;              // možeš staviti `0` za novi unos
+  gradeId: number;             
   skolskaGodinaId: number;
   razredId: number;
   programId: number;
